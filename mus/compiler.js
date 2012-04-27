@@ -41,6 +41,8 @@ var endTime = function (expr) {
         return endTime(expr.left) + endTime(expr.right);
     } else if(expr.tag == 'par'){
       return Math.max(endTime(expr.left), endTime(expr.right));
+    } else if(expr.tag == 'repeat') {
+      return endTime(expr.section) * expr.count;
     }
 };
 
@@ -75,6 +77,11 @@ var evaluate = function(musexpr) {
     [].push.apply(response, evaluate(musexpr.right));
     pointer = old_pointer + endTime(musexpr);
     return response;
+  } else if (musexpr.tag == 'repeat') {
+    for (var i = 0; i < musexpr.count; i++){
+      [].push.apply(response, evaluate(musexpr.section));
+    }
+    return response;
   }
 };
 
@@ -96,7 +103,11 @@ test = {
     left: {
       tag: 'seq',
       left: { tag: 'rest', dur: 100 },  
-      right: { tag: 'note', pitch: 'c4', dur: 500 }
+      right: { 
+        tag: 'repeat',
+        section: { tag: 'note', pitch: 'c4', dur: 500 },
+        count: 3
+      }
     },
     right: { tag: 'note', pitch: 'd4', dur: 500 } 
   } 
@@ -104,6 +115,7 @@ test = {
 
 console.log(test);
 console.log(compile(test));
+console.log(endTime(test.right.left.right) == 1500);
 console.log(pitchToMidi('a0') == 21);
 console.log(pitchToMidi('a1') == 33);
 console.log(pitchToMidi('g3') == 55);
