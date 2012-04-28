@@ -1,0 +1,22 @@
+start =
+    token
+
+token =
+    whitespace* val:expression whitespace*
+        { return val; }
+  / whitespace* val:atom whitespace*
+        { return val; }
+
+expression =
+    "(" elements:token+ ")"
+        { return [].concat(elements); }
+
+atom =
+    chars:validchar+
+        { return chars.join(""); }
+    
+validchar
+    = [0-9a-zA-Z_?!+\-=@#$%^&*/.]
+
+whitespace
+  = [' '\t\r\n]
