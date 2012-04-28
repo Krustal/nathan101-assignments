@@ -6,7 +6,6 @@ var data = fs.readFileSync('../parser.peg', 'utf-8');
 var parse = PEG.buildParser(data).parse;
 
 
-assert.deepEqual( parse(""), []);
 assert.deepEqual( parse("atom"), "atom");
 assert.deepEqual( parse("+"), "+");
 assert.deepEqual( parse("(a b c)"), ["a", "b", "c"] );
