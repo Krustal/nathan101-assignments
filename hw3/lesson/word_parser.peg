@@ -1,0 +1,8 @@
+start =
+  word
+
+word =
+  letters:[a-z]+
+    { return letters.join(""); } 
+  / letters:[A-Z]+
+    { return letters.join(""); }

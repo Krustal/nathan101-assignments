@@ -1,0 +1,20 @@
+start =
+    expression
+    / atom
+    
+validchar
+    = [0-9a-zA-Z_?!+\-=@#$%^&*/.]
+
+atom =
+    chars:validchar+
+        { return chars.join(""); }
+
+token = 
+    " "? val:expression
+        { return [].concat(val); } 
+   / " "? val:atom
+        { return ""+val; }
+
+expression =
+	"(" elements:token+ ")"
+             { return [].concat(elements); }
