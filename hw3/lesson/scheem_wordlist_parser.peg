@@ -1,9 +1,0 @@
-start =
-    wordlist
-    
-word =
-	space:" "? letters:[a-z]+
-    	{ return letters.join(""); }
-
-wordlist =
-	word+
